@@ -7,19 +7,22 @@
     <style>
         body {
             margin: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             background: linear-gradient(135deg, #ff99cc, #ff66b2);
             font-family: 'Arial', sans-serif;
-            overflow: hidden;
+            overflow: auto;
+            padding: 20px 0;
         }
 
         .container {
             text-align: center;
             position: relative;
             color: #fff;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .heart {
@@ -96,6 +99,30 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
+        .day-counter {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 20px auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .day-counter h3 {
+            font-family: 'Great Vibes', cursive;
+            color: #ff4d94;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .day-counter p {
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -107,7 +134,6 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* Floating hearts animation */
         .floating-heart {
             position: absolute;
             font-size: 24px;
@@ -130,7 +156,6 @@
             }
         }
 
-        /* Responsive design */
         @media (max-width: 600px) {
             .heart {
                 width: 150px;
@@ -144,7 +169,7 @@
             .letter-j {
                 font-size: 70px;
             }
-            .love-letter {
+            .love-letter, .day-counter {
                 padding: 20px;
                 margin: 10px;
             }
@@ -172,8 +197,36 @@
                 Ibrohim
             </p>
         </div>
+        <div class="day-counter">
+            <h3>Time Since Our Special Moment</h3>
+            <p id="counter">Calculating...</p>
+        </div>
     </div>
     <script>
+        // Day counter logic
+        function updateCounter() {
+            const startDate = new Date('2025-02-11T13:20:00');
+            const now = new Date();
+            const diff = now - startDate;
+
+            if (diff < 0) {
+                document.getElementById('counter').innerText = 'Our special moment is coming soon!';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('counter').innerText = 
+                `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+        }
+
+        // Update counter every second
+        updateCounter();
+        setInterval(updateCounter, 1000);
+
         // Add floating hearts
         function createFloatingHeart() {
             const heart = document.createElement('div');
